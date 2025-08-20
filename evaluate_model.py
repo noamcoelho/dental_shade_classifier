@@ -4,7 +4,7 @@ from tensorflow.keras.preprocessing import image
 import os
 from glob import glob
 
-MODEL_PATH = 'dental_shade_classifier_model.keraspyt'
+MODEL_PATH = 'dental_shade_classifier_model.keras'
 TEST_DIR = os.path.join('dental_shade_classifier', 'datasets', 'test')
 IMG_HEIGHT, IMG_WIDTH = 128, 128
 
