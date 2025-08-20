@@ -6,7 +6,7 @@ from glob import glob
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
-MODEL_PATH = 'dental_shade_classifier_model.h5'
+MODEL_PATH = 'dental_shade_classifier_model.keras'
 TEST_DIR = os.path.join('dental_shade_classifier', 'datasets', 'test')
 IMG_HEIGHT, IMG_WIDTH = 128, 128
 

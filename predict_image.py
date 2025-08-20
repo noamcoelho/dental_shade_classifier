@@ -4,7 +4,7 @@ from tensorflow.keras.preprocessing import image
 import os
 
 # Caminho do modelo salvo
-MODEL_PATH = 'dental_shade_classifier_model.h5'
+MODEL_PATH = 'dental_shade_classifier_model.keras'
 # Caminho da imagem para teste
 IMAGE_PATH = 'C://Users//coelh//Downloads//dental_shade_classifier//dental_shade_classifier//datasets//train//A1//01.jpeg'
 # Parâmetros de entrada do modelo
@@ -16,6 +16,7 @@ model = tf.keras.models.load_model(MODEL_PATH)
 # Carregar classes
 train_dir = os.path.join('dental_shade_classifier', 'datasets', 'train')
 class_names = sorted(os.listdir(train_dir))
+# o sorted garante que as classes estejam na mesma ordem durante o treinamento e a predição
 
 # Função para prever a classe de uma imagem
 def predict_image(img_path):
@@ -24,9 +25,11 @@ def predict_image(img_path):
     img_array = np.expand_dims(img_array, axis=0) / 255.0
     predictions = model.predict(img_array)
     predicted_class = class_names[np.argmax(predictions[0])]
+    # np.argmax retorna o índice do maior valor na lista de previsões
     confidence = np.max(predictions[0])
     return predicted_class, confidence
 
 if __name__ == '__main__':
     predicted_class, confidence = predict_image(IMAGE_PATH)
+    # predict_image serve para prever a classe de uma imagem
     print(f'Classe prevista: {predicted_class} (confiança: {confidence:.2f})')

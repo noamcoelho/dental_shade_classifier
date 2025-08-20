@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import layers, models
+from tensorflow.keras.applications import ResNet50
 import os
 
 # Caminhos dos diretórios de treino e teste
@@ -40,31 +41,15 @@ test_generator = test_datagen.flow_from_directory(
 )
 
 
-# Modelo CNN
-# CNN é uma arquitetura de rede neural projetada para processar dados em forma de grade, como imagens.
+# Transfer Learning com ResNet50
+base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(img_height, img_width, 3))
+base_model.trainable = False  # Congela as camadas convolucionais
+# (camadas convolucionais são aquelas que extraem características da imagem)
+
 model = models.Sequential([
-    layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(img_height, img_width, 3)),
-    layers.BatchNormalization(),
-    layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
-    layers.BatchNormalization(),
-    layers.MaxPooling2D(2, 2),
-    layers.Dropout(0.25),
-
-    layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
-    layers.BatchNormalization(),
-    layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
-    layers.BatchNormalization(),
-    layers.MaxPooling2D(2, 2),
-    layers.Dropout(0.30),
-
-    layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
-    layers.BatchNormalization(),
-    layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
-    layers.BatchNormalization(),
-    layers.MaxPooling2D(2, 2),
-    layers.Dropout(0.35),
-
-    layers.Flatten(),
+    # o sequential serve para empilhar várias camadas (o nome deixa claro que a saída de uma camada é a entrada da próxima)
+    base_model,
+    layers.GlobalAveragePooling2D(),
     layers.Dense(256, activation='relu'),
     layers.BatchNormalization(),
     layers.Dropout(0.5),
@@ -77,6 +62,7 @@ model.compile(optimizer='adam',
 
 # Treinamento
 history = model.fit(
+    # o comando fit faz o treinamento do modelo usando os dados de treinamento
     train_generator,
     epochs=10,
     validation_data=test_generator
@@ -84,8 +70,9 @@ history = model.fit(
 
 # Avaliação
 loss, acc = model.evaluate(test_generator)
+# o comando evaluate calcula a perda e a acurácia do modelo usando os dados de teste
 print(f'Acurácia no teste: {acc:.2f}')
 
 # Salvar modelo
-model.save('dental_shade_classifier_model.h5')
-print('Modelo salvo como dental_shade_classifier_model.h5')
+model.save('dental_shade_classifier_model.keras')
+print('Modelo salvo como dental_shade_classifier_model.keras')

@@ -22,16 +22,16 @@ dental_shade_classifier/
 ├── predict_image.py
 ├── evaluate_model.py
 ├── confusion_matrix.py
-├── dental_shade_classifier_model.h5
+├── dental_shade_classifier_model.keras
 └── README.md
 ```
 
 ## Scripts
 
-- **train_model.py**: Treina o modelo de classificação de imagens.
-- **predict_image.py**: Faz a predição da classe de uma imagem individual.
-- **evaluate_model.py**: Avalia o modelo em todas as imagens de teste e mostra acurácia/confiança.
-- **confusion_matrix.py**: Gera e exibe a matriz de confusão das previsões.
+- **train_model.py**: Treina o modelo de classificação de imagens usando Transfer Learning com ResNet50 pré-treinado no ImageNet e salva o modelo no formato `.keras`.
+- **predict_image.py**: Faz a predição da classe de uma imagem individual usando o modelo `.keras`.
+- **evaluate_model.py**: Avalia o modelo em todas as imagens de teste, mostra acurácia/confiança e usa o modelo `.keras`.
+- **confusion_matrix.py**: Gera e exibe a matriz de confusão das previsões usando o modelo `.keras`.
 
 ## Como usar
 
@@ -40,7 +40,7 @@ dental_shade_classifier/
    pip install tensorflow scikit-learn matplotlib numpy
    ```
 2. Organize as imagens nas pastas `train` e `test`, separadas por classe.
-3. Treine o modelo:
+3. Treine o modelo (usando ResNet50 e salvando em formato moderno):
    ```bash
    python train_model.py
    ```
@@ -59,8 +59,12 @@ dental_shade_classifier/
 
 ## Observações
 - Certifique-se de que as imagens estejam corretamente organizadas em subpastas por classe.
-- O modelo salvo será `dental_shade_classifier_model.h5`.
+- O modelo salvo será `dental_shade_classifier_model.keras` (formato recomendado pelo Keras).
 - Ajuste os parâmetros dos scripts conforme necessário para seu caso.
+
+### Atualizações recentes
+- Agora o projeto utiliza Transfer Learning com ResNet50 pré-treinado.
+- O modelo é salvo e carregado no formato `.keras` (mais moderno e recomendado).
 
 ---
 
