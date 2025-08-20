@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras.preprocessing import image
 import os
+import matplotlib.pyplot as plt
 
 # Caminho do modelo salvo
 MODEL_PATH = 'dental_shade_classifier_model.keras'
@@ -29,7 +30,17 @@ def predict_image(img_path):
     confidence = np.max(predictions[0])
     return predicted_class, confidence
 
+def mostrar_imagem_com_classes(img_path, classe_real, classe_prevista):
+    img = image.load_img(img_path)
+    plt.imshow(img)
+    plt.axis('off')
+    plt.title(f'Cor original: {classe_real} | Sugestão: {classe_prevista}')
+    plt.show()
+
 if __name__ == '__main__':
+    # Defina a classe real manualmente ou extraia do caminho da imagem
+    classe_real = os.path.basename(os.path.dirname(IMAGE_PATH))
     predicted_class, confidence = predict_image(IMAGE_PATH)
     # predict_image serve para prever a classe de uma imagem
     print(f'Classe prevista: {predicted_class} (confiança: {confidence:.2f})')
+    mostrar_imagem_com_classes(IMAGE_PATH, classe_real, predicted_class)
